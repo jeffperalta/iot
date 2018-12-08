@@ -1,0 +1,72 @@
+<?php
+/**
+ * equipment-status-criteria-edit.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Tue, 12 Sep 2017
+ * Time: 12:53:46 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+$status_list = $this->status_list;
+$js_status_list = $this->js_status_list;
+?>
+<link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+<form action="/admin/equipment-status-criteria-update" method="post">
+    <input type="hidden" class="form-control-admin" name="equipment_id" id="equipment_id" required="required" aria-required="true" value="<?php echo $this->equipment['id']?>">
+    <input type="hidden" class="form-control-admin" name="id" id="id" required="required" aria-required="true" value="<?php echo $this->status_criterion['id']?>">
+    <div class="datagrid-admin">
+        <div class="page-header">Equipment Administration</div>
+        <div class="field-group">
+            <b><?php echo $this->equipment['equipment_id'] . " - " . $this->equipment['equipment_desc'] ?></b>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                <th colspan="2">Update Equipment Status Criteria</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="field-label" width="20%">Alarm Type: </td>
+                    <td width="80%">
+                        <!--<input type="text" class="form-control" placeholder="Alarm Type" name="alarm_type" id="alarm_type" required="required" aria-required="true" value="<?php echo $this->status_criterion['alarm_type']?>">-->
+                        <select class="form-control-admin" placeholder="Select Type" name="alarm_type" id="alarm_type" required="required" aria-required="true">
+                            <?php foreach($status_list as $status_name => $status): ?>
+                                <option value="<?php echo $status_name; ?>" <?php echo ($this->status_criterion['alarm_type'] == $status_name) ? "selected" : ""; ?> ><?php echo $status['name']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-label" >Operand: </td>
+                    <td><input type="text" class="form-control-admin" placeholder="Operand (ie. URL, equipment data placeholders)" name="operand" id="operand" required="required" aria-required="true" value="<?php echo $this->status_criterion['operand']?>"></td>
+                </tr>
+                <tr>
+                    <td class="field-label" >Operator: </td>
+                    <td>
+                        <!--<input type="text" class="form-control" placeholder="Operator" name="operator" id="operator" required="required" value="<?php echo $this->status_criterion['operator']?>">-->
+                        <select class="form-control-admin" placeholder="Select Operator" name="operator" id="operator" required="required">
+                            <?php foreach($this->status_criteria_operator as $value => $display): ?>
+                                <option value="<?php echo $value ?>" <?php echo ($this->status_criterion['operator'] == $value ? "selected" : ""); ?>><?php echo $display ?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-label" >Value: </td>
+                    <td><input type="text" class="form-control-admin" placeholder="Value (ie. HTML to search, Days before maintenance due)" name="value" id="value" required="required" value="<?php echo $this->status_criterion['value']?>"></td>
+                </tr>
+                <tr>
+                    <td class="btn-group" colspan="2">
+                        <button type="button" class="btn-back" onclick="window.history.back();">Back</button>
+                        <button type="submit" class="btn-admin">Update</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</form>

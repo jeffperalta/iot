@@ -1,0 +1,54 @@
+<?php
+/**
+ * index.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Thu, 21 Sep 2017
+ * Time: 16:56:03 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+
+?>
+<html>
+    <head>
+        <link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+    <div class="datagrid-admin">
+    <div class="page-header">Machine Status Page</div>
+    <?php
+        if($this->view_type == "user") {
+            echo "<table>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Equipment Id</th>";
+            echo "<th>Results</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            $ctr = 1;
+            foreach($this->equipment_status as $equipment) {
+                $eq_index = (isset($equipment['MACHNAME']) ? $equipment['MACHNAME'] : "Equipment #".$ctr);
+                $var_dump = "";
+                foreach($equipment as $field_name => $field_value) {
+                    $var_dump .= "<b>$field_name:</b> $field_value <br />";
+                }
+                echo "<tr " .(($ctr%2) ? '' : 'class="alt"'). " >";
+                echo "<td>$eq_index</td><td>$var_dump</td></tr>";
+                $ctr++;
+            }
+            echo "</tbody>";
+            echo "</table>";
+        }else{
+            if(is_array($this->results)){
+                print_r($this->results);
+            } else {
+                echo $this->results;
+            }
+        }
+    ?>
+    </div>
+    </body>
+</html>

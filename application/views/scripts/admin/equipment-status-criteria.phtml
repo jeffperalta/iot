@@ -1,0 +1,146 @@
+<?php
+/**
+ * equipment-status-criteria.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Tue, 12 Sep 2017
+ * Time: 12:53:40 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+$status_list = $this->status_list;
+$js_status_list = $this->js_status_list;
+?>
+<script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+<script>
+    $( document ).ready(function() {
+        $('#btn_create').on({
+            'click': function(){
+                var status_list = {<?php echo $js_status_list;?>};
+                var equipment_id = '<?php echo $this->equipment['id']; ?>';
+                var alarm_type = $('#alarm_type').val();
+                var operand = $('#operand').val();
+                var operator = $('#operator').val();
+                var value = $('#value').val();
+
+                if(checkRequiredFields()) {
+                    $.ajax({
+                        url: "/admin/equipment-status-create",
+                        data:{
+                            equipment_id: equipment_id,
+                            alarm_type : alarm_type,
+                            operand: operand,
+                            operator: operator,
+                            value: value
+                        },
+                        success: function(response) {
+                            message = JSON.parse(response);
+                            console.log(message);
+                            location.reload();
+                        },
+                    });
+                }else{
+                    alert('Please specify required fields.');
+                }
+
+            }
+        });
+
+        $('.action').on({
+            'click' : function () {
+                var eid = $(this).attr('eid');
+                var type = $(this).attr('type');
+
+                switch(type){
+                    case 'edit':
+                        window.location.href = "/admin/equipment-status-criteria-edit?id="+eid;
+                        break;
+                    case 'delete':
+                        if (confirm("Please confirm action!")) {
+                            window.location.href = "/admin/equipment-status-criteria-delete?id="+eid+"&equipment_id=<?php echo $this->equipment['id'];?>";
+                        }
+                        break;
+                }
+            }
+        });
+    });
+
+    function checkRequiredFields()
+    {
+        var results = false;
+        if($('select[id=alarm_type] option:selected').val() == "") {
+            $('#alarm_type').focus();
+            results = false;
+        }else if($('#operand').val().trim() == "") {
+            $('#operand').focus();
+            results = false;
+        }else if($('select[id=operator] option:selected').val() == "") {
+            $('#operator').focus();
+            results = false;
+        }else if($('#value').val().trim() == "") {
+            $('#value').focus();
+            results = false;
+        }else{
+            results = true;
+        }
+
+        return results;
+    }
+</script>
+<link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+<div class="datagrid-admin">
+    <div class="page-header">Equipment Administration</div>
+    <div class="field-group">
+        <b><?php echo $this->equipment['equipment_id'] . " - " . $this->equipment['equipment_desc'] ?></b>
+    </div>
+    <div class="field-group">
+        <b>New Status Criteria:</b>
+        <select id="alarm_type">
+            <option value="" disabled selected>Select Type</option>
+            <?php foreach($status_list as $status_name => $status): ?>
+            <option value="<?php echo $status_name; ?>"><?php echo $status['name']; ?></option>
+            <?php endforeach; ?>
+        </select>
+        <input type="text" id="operand" placeholder="Operand (ie. URL, equipment data placeholders)" value="" size="30" >
+        <select id="operator">
+            <option value="" disabled selected>Select Operator</option>
+            <?php foreach($this->status_criteria_operator as $value => $display): ?>
+                <option value="<?php echo $value ?>"><?php echo $display ?></option>
+            <?php endforeach;?>
+        </select>
+        <input type="text" id="value" placeholder="Value (ie. HTML to search, Days before maintenance due)" value="" size="30" >
+        <button type="button" id="btn_create">Create criteria</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th width="20%">Alarm type</th>
+                <th width="30%">Operand</th>
+                <th width="10%">Operator</th>
+                <th width="30%">Value</th>
+                <th width="10%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php for($i = 0; $i < count($this->status_criteria_list); $i++): ?>
+            <tr <?php if($i%2) echo 'class="alt"'?>>
+                <td><?php echo $this->status_criteria_list[$i]['alarm_type']?></td>
+                <td><?php echo $this->status_criteria_list[$i]['operand']?></td>
+                <td><?php echo $this->status_criteria_list[$i]['operator']?></td>
+                <td><?php echo $this->status_criteria_list[$i]['value']?></td>
+                <td>
+                    <img class="action" type="edit"     eid="<?php echo $this->status_criteria_list[$i]['id']?>" title="Edit status criteria"         src="/images/edit.png">
+                    <img class="action" type="delete"   eid="<?php echo $this->status_criteria_list[$i]['id']?>" title="Delete status criteria"       src="/images/delete.png">
+                </td>
+            </tr>
+            <?php endfor;?>
+            <tr>
+                <td class="btn-group" colspan="5">
+                    <button type="button" class="btn-back" onclick="window.location.href = '/admin'">Back</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

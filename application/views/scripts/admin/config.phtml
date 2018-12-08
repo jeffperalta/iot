@@ -1,0 +1,72 @@
+<?php
+/**
+ * config.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2018.
+ * Date: Tue, 15 May 2018
+ * Time: 13:50:07 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+?>
+<link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+<script>
+    <?php if($this->success == 1):?>
+        alert('Configuration successfully saved');
+    <?php endif; ?>
+    <?php if($this->success == 0 && $this->success != ''):?>
+        alert('Ooops! Something went wrong!');
+    <?php endif; ?>
+</script>
+
+<?php
+    $columns = 2;
+    $label_width = "10%";
+    $value_width = "40%";
+?>
+<form action="/admin/config-update" method="post">
+    <input type="hidden" class="form-control-admin" name="id" id="id" required="required" aria-required="true" value="<?php echo $this->equipment['id']?>">
+    <div class="datagrid-admin">
+        <div class="page-header">Configuration Page</div>
+        <table>
+            <thead>
+                <tr>
+                <th colspan="<?php echo $columns *2; ?>">Update Configurations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    for($i = 0; $i < count($this->config_names); $i+=$columns){
+                        $j = 0;
+                        echo "<tr>";
+                        while($j < $columns) {
+                            if(isset($this->config_names[$i+$j]) && $this->config_names[$i+$j] != ''){
+                                $names = $this->config_names[$i+$j];
+                                if(strpos($names, "password")) $type = "password"; else $type = "text";
+                                echo "<td class=\"field-label\" width=\"$label_width\">$names: </td>";
+                                echo "<td width=\"$value_width\"><input type=\"$type\" class=\"form-control-admin\" placeholder=\"$names\" name=\"$names\" id=\"$names\" required=\"required\" aria-required=\"true\" value=\"{$this->$names}\"></td>";
+                            }else{
+                                echo "<td class=\"field-label\" width=\"$label_width\">&nbsp;</td>";
+                                echo "<td width=\"$value_width\">&nbsp;</td>";
+                            }
+                            $j++;
+                        }
+                        echo "</tr>";
+                    }
+
+                    foreach($this->config_names as $names) {
+
+                    }
+                ?>
+                <tr>
+                    <td class="btn-group" colspan="<?php echo $columns *2; ?>">
+                        <button type="button" class="btn-back" onclick="window.location.href='/menu/index'">Back</button>
+                        <button type="submit" class="btn-admin">Update</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</form>

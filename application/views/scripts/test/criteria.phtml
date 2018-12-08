@@ -1,0 +1,51 @@
+<?php
+/**
+ * criteria.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Tue, 12 Sep 2017
+ * Time: 12:54:38 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+
+?>
+<style>
+    a:link,
+    a:visited
+    {
+        color: #0398CA;
+    }
+
+    span#zf-name
+    {
+        color: #91BE3F;
+    }
+
+    div#welcome
+    {
+        color: #FFFFFF;
+        //background-image: url(http://framework.zend.com/images/bkg_header.jpg);
+        width:  200px;
+        height: 200px;
+        border: 2px solid #444444;
+        overflow: hidden;
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .on{
+        background-color: green;
+    }
+    .off{
+        background-color: red;
+    }
+
+    div#more-information
+    {
+        //background-image: url(http://framework.zend.com/images/bkg_body-bottom.gif);
+        height: 100%;
+    }
+</style>
+<div id="welcome" class ="<?php echo $this->results; ?>"><?php echo $this->equipment_id;?></div>

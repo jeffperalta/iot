@@ -1,0 +1,6 @@
+.idea/*
+.zfproject.xml
+application/configs/application.ini
+public/.htaccess
+library/Zend/*
+

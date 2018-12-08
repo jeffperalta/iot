@@ -1,0 +1,30 @@
+/*
+ * main.css
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Fri, 15 Sep 2017
+ * Time: 15:18:48 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+
+.page-header { text-align: center; margin: 20px 10px; font-size: xx-large}
+
+.datagrid-customer table { border-collapse: collapse; text-align: center; width: 100%; } .datagrid-customer {font: normal 12px/150% Verdana, Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #36752D; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }.datagrid-customer table td, .datagrid-customer table th { padding: 10px 10px; }.datagrid-customer table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #36752D), color-stop(1, #275420) );background:-moz-linear-gradient( center top, #36752D 5%, #275420 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#36752D', endColorstr='#275420');background-color:#36752D; color:#FFFFFF; font-size: 15px; font-weight: bold; border-left: 1px solid #36752D; } .datagrid-customer table thead th:first-child { border: none; }.datagrid-customer table tbody td { color: #275420; border-left: 1px solid #C6FFC2;font-size: 15px;font-weight: normal; }.datagrid-customer table tbody .alt td { background: #DFFFDE; color: #275420; }.datagrid-customer table tbody td:first-child { border-left: none; }.datagrid-customer table tbody tr:last-child td { border-bottom: none; }
+.datagrid-admin table { border-collapse: collapse; text-align: center; width: 100%; } .datagrid-admin {font: normal 12px/150% Verdana, Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }.datagrid-admin table td, .datagrid-admin table th { padding: 10px 10px; }.datagrid-admin table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 15px; font-weight: bold; border-left: 1px solid #0070A8; } .datagrid-admin table thead th:first-child { border: none; }.datagrid-admin table tbody td { color: #00557F; border-left: 1px solid #E1EEF4;font-size: 15px;font-weight: normal; }.datagrid-admin table tbody .alt td { background: #E1EEf4; color: #00557F; }.datagrid-admin table tbody td:first-child { border-left: none; }.datagrid-admin table tbody tr:last-child td { border-bottom: none; }
+.form-control-admin { width: 100%; background-color: white; color: #006699; padding: 14px 20px; margin: 8px 0; border: 1px; border-radius: 4px; cursor: pointer; font: bold 12px/150% Verdana, Arial, Helvetica, sans-serif; }
+.btn-admin {background-color: #00557f;width: 20%; background-color: #006699; font: normal 12px/150% Verdana, Arial, Helvetica, sans-serif; text-transform: uppercase; color: white; padding: 14px 20px;  margin: 8px 0;  border: none; border-radius: 4px; cursor: pointer;}
+
+.status-indicator { width:30px ; height: 30px; }
+.field-group { text-align: center; margin: 20px 10px; }
+.field-label {text-align: right;}
+.btn-group {text-align: center}
+.btn-back {background-color: #5c5d5e;width: 20%; background-color: #797676; font: normal 12px/150% Verdana, Arial, Helvetica, sans-serif; text-transform: uppercase; color: white; padding: 14px 20px;  margin: 8px 0;  border: none; border-radius: 4px; cursor: pointer;}
+.btn-user {background-color: #275420;width: 20%; background-color: #36752D; font: normal 12px/150% Verdana, Arial, Helvetica, sans-serif; text-transform: uppercase; color: white; padding: 14px 20px;  margin: 8px 0;  border: none; border-radius: 4px; cursor: pointer;}
+.btn-sys {background-color: #ffa608;width: 20%; background-color: #ffbe46; font: normal 12px/150% Verdana, Arial, Helvetica, sans-serif; text-transform: uppercase; color: white; padding: 14px 20px;  margin: 8px 0;  border: none; border-radius: 4px; cursor: pointer;}
+
+
+
+
+

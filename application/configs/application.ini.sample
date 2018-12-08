@@ -1,0 +1,37 @@
+[production]
+phpSettings.display_startup_errors = 0
+phpSettings.display_errors = 0
+includePaths.library = APPLICATION_PATH "/../library"
+bootstrap.path = APPLICATION_PATH "/Bootstrap.php"
+bootstrap.class = "Bootstrap"
+appnamespace = "Application"
+resources.frontController.controllerDirectory = APPLICATION_PATH "/controllers"
+resources.frontController.params.displayExceptions = 0
+resources.frontController.plugins.myplugin = "Front_Controller_Plugin_Main"
+
+[staging : production]
+
+[testing : production]
+phpSettings.display_startup_errors = 1
+phpSettings.display_errors = 1
+
+[development : production]
+phpSettings.display_startup_errors = 1
+phpSettings.display_errors = 1
+resources.frontController.params.displayExceptions = 1
+
+; Database
+resources.multidb.appdb.adapter = "pdo_mysql"
+resources.multidb.appdb.host = "localhost"
+resources.multidb.appdb.username = "root"
+resources.multidb.appdb.password = ""
+resources.multidb.appdb.dbname = ""
+resources.multidb.appdb.isDefaultTableAdapter = true
+
+resources.multidb.docdb.adapter = "sqlsrv"
+resources.multidb.docdb.host = "JEFF-PC\SQLEXPRESS"
+resources.multidb.docdb.username = "sa"
+resources.multidb.docdb.password = ""
+resources.multidb.docdb.dbname = ""
+resources.multidb.docdb.isDefaultTableAdapter = false
+resources.multidb.docdb.driver_options.ReturnDatesAsStrings = true

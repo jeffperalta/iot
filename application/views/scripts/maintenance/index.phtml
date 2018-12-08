@@ -1,0 +1,148 @@
+<?php
+/**
+ * index.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Tue, 12 Sep 2017
+ * Time: 12:54:26 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+$status_list = $this->status_list;
+$js_status_list = $this->js_status_list;
+?>
+<script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+<script>
+    $( document ).ready(function() {
+        $('.status-indicator').on({
+            'click': function(){
+                if(checkLastMaintenanceBy()) {
+                    var element_id = $(this).attr('id');
+                    var eid = $(this).attr('eid');
+                    var equipment_id = $(this).attr('equipment_id');
+
+                    var status_list = {<?php echo $js_status_list;?>};
+                    var status_name = $(this).attr('status_name');
+                    var status = ($(this).attr('status') == "0") ? 1 : 0;
+                    var last_maintenance_by = $('#last_maintenance_by').val().trim();
+
+                    $.ajax({
+                        url: "/maintenance/update",
+                        data: {
+                            equipment_id: equipment_id,
+                            status_name : status_name,
+                            status: status,
+                            last_maintenance_by: last_maintenance_by
+                        },
+                        success: function(response) {
+                            message = JSON.parse(response);
+                            console.log(message);
+                            $('#'+element_id).attr('src', status_list[status_name][status]);
+                            $('#'+element_id).attr('status', status);
+                            $('#'+eid+"_last_maintenance").html(message.equipment.last_maintenance);
+                            $('#'+eid+"_next_maintenance").val(message.equipment.next_maintenance.replace(" ", "T"));
+                        }
+                    });
+                }else{
+                    alert('Please specify your name to continue.');
+                }
+            }
+        });
+
+        $('.next_maintenance').on({
+            'change' : function() {
+                if(checkLastMaintenanceBy()) {
+                    var element_id = $(this).attr('id');
+                    var eid = $(this).attr('eid');
+                    var equipment_id = $(this).attr('equipment_id');
+
+                    var status_list = {<?php echo $js_status_list;?>};
+                    var status_name = 'maintenance_due';
+                    var equipment_id = $(this).attr('equipment_id');
+                    var next_maintenance = $(this).val().replace("T", " ");
+                    var last_maintenance_by = $('#last_maintenance_by').val().trim();
+
+                    $.ajax({
+                        url: "/maintenance/update",
+                        data: {
+                            equipment_id: equipment_id,
+                            next_maintenance : next_maintenance,
+                            last_maintenance_by: last_maintenance_by,
+                            recompute_status : 1
+                        },
+                        success: function(response) {
+                            message = JSON.parse(response);
+                            console.log(message);
+                            var status = message.equipment.maintenance_due;
+                            $('#'+eid+"_"+status_name).attr('src', status_list[status_name][status]);
+                            $('#'+eid+"_"+status_name).attr('status', status);
+                        }
+                    });
+                }else{
+                    alert('Please specify your name to continue.');
+                }
+            }
+        });
+    });
+
+    function checkLastMaintenanceBy()
+    {
+        if($('#last_maintenance_by').val().trim() == "") {
+            $('#last_maintenance_by').focus();
+            return false;
+        }else{
+            return true;
+        }
+    }
+</script>
+<link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+<div class="datagrid-customer">
+    <div class="page-header">Equipment Maintenance</div>
+    <div class="field-group"><b>Specify Your Name:</b> <input type="text" id="last_maintenance_by" value="" size="50" required></div>
+    <table>
+        <thead>
+        <tr>
+            <th width="20%">Equipment ID</th>
+            <th width="20%">Description</th>
+            <th width="20%">Last Maintenance</th>
+            <th width="20%">Next Maintenance</th>
+            <?php foreach($status_list as $status_name => $status): ?>
+            <th width="20%"><?php echo $status['name']?></th>
+            <?php endforeach;?>
+        </tr>
+        </thead>
+        <tbody>
+        <?php for($i = 0; $i < count($this->equipment_list); $i++): ?>
+            <tr <?php if($i%2) echo 'class="alt"'?>>
+                <td><?php echo $this->equipment_list[$i]['equipment_id']?></td>
+                <td><?php echo $this->equipment_list[$i]['equipment_desc']?></td>
+                <td><div id="<?php echo $this->equipment_list[$i]['id']."_last_maintenance"?>"><?php echo $this->equipment_list[$i]['last_maintenance']?></div></td>
+                <!--<td><div id="<?php echo $this->equipment_list[$i]['id']."_next_maintenance"?>"><?php echo $this->equipment_list[$i]['next_maintenance']?></div></td>-->
+                <td>
+                    <div>
+                        <input id="<?php echo $this->equipment_list[$i]['id']."_next_maintenance"?>"
+                            class="next_maintenance"
+                            eid="<?php echo $this->equipment_list[$i]['id']?>"
+                            equipment_id="<?php echo $this->equipment_list[$i]['equipment_id']?>"
+                            type="datetime-local"
+                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
+                            value="<?php echo str_replace(" ","T", date("Y-m-d H:i:s", strtotime($this->equipment_list[$i]['next_maintenance']))) ;?>">
+                    </div>
+                </td>
+                <?php foreach($status_list as $status_name => $status): ?>
+                    <td>
+                        <img id="<?php echo $this->equipment_list[$i]['id']."_".$status_name?>"
+                             class="status-indicator"
+                             eid="<?php echo $this->equipment_list[$i]['id']?>"
+                             equipment_id="<?php echo $this->equipment_list[$i]['equipment_id']?>"
+                             status="<?php echo $this->equipment_list[$i][$status_name]?>"
+                             status_name="<?php echo $status_name?>" src="<?php echo $status['img'][$this->equipment_list[$i][$status_name]]?>">
+                    </td>
+                <?php endforeach;?>
+            </tr>
+        <?php endfor;?>
+        </tbody>
+    </table>
+</div>
+

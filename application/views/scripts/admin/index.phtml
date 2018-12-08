@@ -1,0 +1,138 @@
+<?php
+/**
+ * index.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Tue, 12 Sep 2017
+ * Time: 12:53:50 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+$status_list = $this->status_list;
+$js_status_list = $this->js_status_list;
+?>
+<script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+<script>
+    $( document ).ready(function() {
+        $('#btn_create').on({
+            'click': function () {
+                var equipment_id = $('#new_equipment_id').val().trim();
+                var equipment_desc = $('#new_equipment_description').val().trim();
+
+                if(equipment_id != '' && equipment_desc != '') {
+                    $.ajax({
+                        url: "/admin/equipment-create",
+                        data: {
+                            equipment_id: equipment_id,
+                            equipment_desc: equipment_desc
+                        },
+                        success: function(response) {
+                            message = JSON.parse(response);
+                            console.log(message);
+                            location.reload();
+                        },
+                    });
+                }else{
+                    alert('Specify the equipment id and description to continue');
+                }
+            }
+        });
+
+        $('.action').on({
+            'click' : function () {
+                var eid = $(this).attr('eid');
+                var type = $(this).attr('type');
+
+                switch(type){
+                    case 'edit':
+                        window.location.href = "/admin/equipment-edit?id="+eid;
+                        break;
+                    case 'criteria':
+                        window.location.href = "/admin/equipment-status-criteria?id="+eid;
+                        break;
+                    case 'history':
+                        window.location.href = "/equipment/history?id="+eid;
+                        break;
+                    case 'delete':
+                        if (confirm("Please confirm action!")) {
+                            window.location.href = "/admin/equipment-delete?id="+eid;
+                        }
+                        break;
+                }
+            }
+        });
+    });
+
+    function updateAllStatus()
+    {
+        $.ajax({
+            url: "/equipment/update-all",
+            success: function (response) {
+                message = JSON.parse(response);
+                console.log(message);
+                alert("Equipment status updated!");
+                location.reload();
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+            }
+        });
+    }
+</script>
+<link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+<div class="datagrid-admin">
+    <div class="page-header">Equipment Administration</div>
+    <div class="field-group">
+        <b>New Equipment:</b>
+        <input type="text" id="new_equipment_id" placeholder="Equipment ID" value="" size="20" >
+        <input type="text" id="new_equipment_description" placeholder="Equipment Description" value="" size="40" >
+        <button id="btn_create" type="button">Create equipment</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th width="10%">Eq. ID</th>
+                <th width="15%">Description</th>
+                <?php foreach($status_list as $status_name => $status): ?>
+                <th width="10%"><?php echo $status['name']?></th>
+                <?php endforeach;?>
+                <th width="10%">Next Maintenance</th>
+                <th width="10%">Last Update</th>
+                <th width="10%">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php for($i = 0; $i < count($this->equipment_list); $i++): ?>
+            <tr <?php if($i%2) echo 'class="alt"'?>>
+                <td><?php echo $this->equipment_list[$i]['equipment_id']?></td>
+                <td><?php echo $this->equipment_list[$i]['equipment_desc']?></td>
+                <?php foreach($status_list as $status_name => $status): ?>
+                <td>
+                    <img class="status-indicator"
+                        equipment_id="<?php echo $this->equipment_list[$i]['equipment_id']?>"
+                        status="<?php echo $this->equipment_list[$i][$status_name]?>"
+                        status_name="<?php echo $status_name?>"
+                        src="<?php echo $status['img'][$this->equipment_list[$i][$status_name]]?>">
+                </td>
+                <?php endforeach;?>
+                <td><?php echo $this->equipment_list[$i]['next_maintenance']?></td>
+                <td><?php echo $this->equipment_list[$i]['updated_at']?></td>
+                <td>
+                    <img class="action" type="edit"     eid="<?php echo $this->equipment_list[$i]['id']?>" title="Edit equipment"         src="/images/edit.png">
+                    <img class="action" type="criteria" eid="<?php echo $this->equipment_list[$i]['id']?>" title="Edit status criteria"   src="/images/status_criteria.png">
+                    <img class="action" type="history"  eid="<?php echo $this->equipment_list[$i]['id']?>" title="View history"           src="/images/history.png">
+                    <img class="action" type="delete"   eid="<?php echo $this->equipment_list[$i]['id']?>" title="Delete equipment"       src="/images/delete.png">
+                </td>
+            </tr>
+            <?php endfor;?>
+            <tr>
+                <td class="btn-group" colspan="8">
+                    <button type="button" class="btn-admin" onclick="window.location.href = '/equipment/history'">View History</button>
+                    <button type="button" class="btn-admin" onclick="updateAllStatus()">Update All Status</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

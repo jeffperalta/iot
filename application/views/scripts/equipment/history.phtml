@@ -1,0 +1,90 @@
+<?php
+/**
+ * history.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Tue, 12 Sep 2017
+ * Time: 17:30:39 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+?>
+<script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/js/json2html.js"></script>
+<script type="text/javascript" src="/js/jquery.json2html.js"></script>
+<script>
+    $( document ).ready(function() {
+        $('.action').on({
+            'click' : function () {
+                var type = $(this).attr('type');
+                var results = $(this).attr('results');
+                var start_date = $('#start_date').val();
+                var end_date = $('#end_date').val();
+
+                switch(type){
+                    case 'view':
+                        alert(results);
+                        break;
+                    case 'load':
+                         window.location.href = "/equipment/history?id=<?php echo $this->equipment_id; ?>&start_date=" + start_date + "&end_date=" + end_date;
+                        break;
+                }
+            }
+        });
+
+        /*
+        var transform = [
+            {'<>':'div','html':'trip_alarm: ${trip_alarm}'},
+            {'<>':'div','html':'on_off_status: ${on_off_status}'},
+            {'<>':'div','html':'maintenance_due: ${maintenance_due}'},
+            {'<>':'div','html':'status_criteria: ${status_criteria.trip_alarm.1.run_date}'}
+        ];
+        var data = {};
+        */
+        <?php //for($i = 0; $i < count($this->history); $i++): ?>
+            //data = JSON.parse('<?php //echo $this->history[$i]['results'] ?>');
+            //$("#history-<?php //echo $this->history[$i]['id'] ?>").html(json2html.transform(data, transform));
+            //$("#history-<?php //echo $this->history[$i]['id'] ?>").html('<?php //echo $this->history[$i]['results'] ?>');
+        <?php //endfor; ?>
+    });
+</script>
+<link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+<div class="datagrid-admin">
+    <div class="page-header">Equipment History</div>
+    <div class="field-group">
+        <b>Start Date:</b>
+        <input type="date" id="start_date" placeholder="Start Date" value="<?php echo $this->start_date;?>" size="20" >
+        <b>End Date:</b>
+        <input type="date" id="end_date" placeholder="End Date" value="<?php echo $this->end_date;?>" size="20" >
+        <img class="action" type="load" src="/images/view.png">
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th width="20%">Eq. ID</th>
+                <th width="25%">Description</th>
+                <th width="25%">Date</th>
+                <th width="20%">Type</th>
+                <th width="10%">Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php for($i = 0; $i < count($this->history); $i++): ?>
+            <tr <?php if($i%2) echo 'class="alt"'?>>
+                <td><?php echo $this->history[$i]['equipment_id']?></td>
+                <td><?php echo $this->history[$i]['equipment_desc']?></td>
+                <td><?php echo $this->history[$i]['created_at']?></td>
+                <td><?php echo $this->history[$i]['type']?></td>
+                <td><img class="action" type="view" results='<?php echo $this->history[$i]['results']?>' title="View results"   src="/images/view.png"></td>
+            </tr>
+            <?php endfor;?>
+             <tr>
+                <td class="btn-group" colspan="5">
+                    <button type="button" class="btn-back" onclick="window.history.back()">Back</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

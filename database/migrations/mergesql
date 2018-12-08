@@ -1,0 +1,11 @@
+@ECHO off
+SET filename=migration
+goto :merge
+
+:merge
+RM %filename%.sql
+PAUSE
+FOR %%F IN (*.sql) DO TYPE "%%F" >>%filename%.sql
+PAUSE
+EXIT
+

@@ -1,0 +1,66 @@
+<?php
+/**
+ * equipment.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Tue, 12 Sep 2017
+ * Time: 12:53:18 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+$status_list = $this->status_list;
+$js_status_list = $this->js_status_list;
+?>
+<script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+<script>
+    $( document ).ready(function() {
+        $('.status-indicator').on({
+            'click': function(){
+                var status_list = {<?php echo $js_status_list;?>};
+                var status_name = $(this).attr('status_name');
+                var status = ($(this).attr('status') == "0") ? 1 : 0;
+                var equipment_id = $(this).attr('equipment_id');
+                $.ajax({
+                    url: "/test/update?equipment_id="+equipment_id+"&status_name="+status_name+"&status="+status,
+                    success: function(response) {
+                         message = JSON.parse(response);
+                         console.log(message);
+                    },
+                });
+                $(this).attr('src', status_list[status_name][status]);
+                $(this).attr('status', status);
+            }
+        });
+    });
+</script>
+<link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+
+<div class="datagrid-admin">
+    <div class="page-header">Equipment Administration</div>
+    <table>
+        <thead>
+            <tr>
+                <th width="15%">Equipment ID</th>
+                <th width="20%">Description</th>
+                <?php foreach($status_list as $status_name => $status): ?>
+                <th width="15%"><?php echo $status['name']?></th>
+                <?php endforeach;?>
+                <th width="15%">Next Maintenance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php for($i = 0; $i < count($this->equipment_list); $i++): ?>
+            <tr <?php if($i%2) echo 'class="alt"'?>>
+                <td><?php echo $this->equipment_list[$i]['equipment_id']?></td>
+                <td><?php echo $this->equipment_list[$i]['equipment_desc']?></td>
+                <?php foreach($status_list as $status_name => $status): ?>
+                <td><img id="" class="status-indicator" equipment_id="<?php echo $this->equipment_list[$i]['equipment_id']?>" status="<?php echo $this->equipment_list[$i][$status_name]?>" status_name="<?php echo $status_name?>" src="<?php echo $status['img'][$this->equipment_list[$i][$status_name]]?>"></td>
+                <?php endforeach;?>
+                <td><?php echo $this->equipment_list[$i]['next_maintenance']?></td>
+            </tr>
+            <?php endfor;?>
+        </tbody>
+    </table>
+</div>
+

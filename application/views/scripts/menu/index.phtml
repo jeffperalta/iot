@@ -1,0 +1,60 @@
+<?php
+/**
+ * index.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2018.
+ * Date: Tue, 15 May 2018
+ * Time: 11:13:36 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+
+?>
+
+<link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+<div class="datagrid-customer">
+    <div class="page-header">IBMS Menu</div>
+    <table>
+        <thead>
+            <tr>
+                <th width="15%">Users</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><button class="btn-user" type="button" onclick="window.location.href='/maintenance/index'">Equipment Maintenance</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-user" type="button" onclick="window.location.href='/test/index'">Testing Page</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br /><br /><br />
+<div class="datagrid-admin">
+    <table>
+        <thead>
+            <tr>
+                <th width="15%">Administrators</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><button class="btn-admin" type="button" onclick="window.location.href='/admin/index'">Administration Page</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-admin" type="button" onclick="window.location.href='/admin/config'">Configuration Page</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-admin" type="button" onclick="window.location.href='/adam/index'">CMS Adam Page</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-admin" type="button" onclick="window.location.href='/alarm/index?view=user'">Machine Status Page</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-sys" type="button" onclick="window.location.href='/equipment/update-all'">Update All Equipment Status</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

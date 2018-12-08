@@ -1,0 +1,52 @@
+<?php
+/**
+ * equipment-edit.phtml
+ * @author Jeff Peralta - jaydocperalta@gmail.com
+ * @copyright Copyright (c) 2017.
+ * Date: Tue, 12 Sep 2017
+ * Time: 12:53:35 +0800
+ *
+ * LICENSE : this file is the exclusive property. No unauthorized copy or modification is allowed.
+ *
+ */
+?>
+<link href="/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+<form action="/admin/equipment-update" method="post">
+    <input type="hidden" class="form-control-admin" name="id" id="id" required="required" aria-required="true" value="<?php echo $this->equipment['id']?>">
+    <div class="datagrid-admin">
+        <div class="page-header">Equipment Administration</div>
+        <table>
+            <thead>
+                <tr>
+                <th colspan="2">Update Equipment Information</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="field-label" width="20%">Equipment ID: </td>
+                    <td width="80%"><input type="text" class="form-control-admin" placeholder="Equipment ID" name="equipment_id" id="equipment_id" required="required" aria-required="true" value="<?php echo $this->equipment['equipment_id']?>"></td>
+                </tr>
+                <tr>
+                    <td class="field-label" >Equipment Description: </td>
+                    <td><input type="text" class="form-control-admin" placeholder="Equipment Description" name="equipment_desc" id="equipment_desc" required="required" aria-required="true" value="<?php echo $this->equipment['equipment_desc']?>"></td>
+                </tr>
+                <tr>
+                    <td class="field-label" >Duration between maintenance: </td>
+                    <td><input type="text" class="form-control-admin" placeholder="Duration between maintenance (ie. 30 days, 2 months, etc.)" name="maintenance_duration" id="maintenance_duration" required="required" value="<?php echo $this->equipment['maintenance_duration']?>"></td>
+                </tr>
+                <tr>
+                    <td class="field-label" >IP Address: </td>
+                    <td><input type="text" class="form-control-admin" placeholder="IP Address" name="ip_address" id="ip_address" required="required" value="<?php echo $this->equipment['ip_address']?>"></td>
+                </tr>
+                <tr>
+                    <td class="btn-group" colspan="2">
+                        <button type="button" class="btn-back" onclick="window.history.back();">Back</button>
+                        <button type="submit" class="btn-admin">Update</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</form>
